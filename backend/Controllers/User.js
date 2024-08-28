@@ -1,6 +1,6 @@
 const User = require("../Models/User");
 const bcrypt = require("bcrypt");
-const uploadToS3 = require("../db/Aws-s3");
+const { uploadToS3 } = require("../db/Aws-s3");
 
 const Register = async(req, res) => {
     try {
@@ -91,21 +91,20 @@ const forgetpassword = async(req, res) => {
 
 const updateprofile = async(req, res) => {
     try {
-        // const { email, name, age, gender, height, weight } = req.body;
-        // console.log(req.body);
+        const { email, name, age, gender, height, weight } = req.body;
+        console.log(req.body);
         const profilePicture = req.file;
         console.log(profilePicture, "12344");
 
-        // if (!email) {
-        //     return res.status(400).json({ message: "Email is required" });
-        // }
+        if (!email) {
+            return res.status(400).json({ message: "Email is required" });
+        }
 
         let imageUrl = null;
         if (profilePicture) {
             imageUrl = await uploadToS3(profilePicture);
-            console.log(imageUrl, "123");
+
         }
-        const email = "kaustubh@gmail.com";
         const updatedUser = await User.findOneAndUpdate({ email }, { profilePicture: imageUrl }, { new: true });
 
         if (!updatedUser) {
@@ -114,7 +113,7 @@ const updateprofile = async(req, res) => {
 
         res.json({ message: "Profile updated successfully", user: updatedUser });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ message: error.message + "123" });
     }
 };
 

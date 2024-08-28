@@ -12,12 +12,16 @@ const s3Client = new S3Client({
 const BUCKET_NAME = 'personal-project-s3-bucket';
 
 async function uploadToS3(file) {
-    const fileStream = Readable.from(file.buffer);
-    console.log(fileStream.toString());
+    console.log(file, "file");
+    if (!file || !file.buffer) {
+        throw new Error('Invalid file object. File buffer is missing.');
+    }
+    // const fileStream = Readable.from(file.buffer);
     const params = {
         Bucket: BUCKET_NAME,
         Key: file.originalname,
-        Body: fileStream,
+        Body: file.buffer,
+
     };
 
     try {
@@ -29,6 +33,7 @@ async function uploadToS3(file) {
         throw new Error('Failed to upload file');
     }
 }
+
 
 module.exports = {
     uploadToS3,

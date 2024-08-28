@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const User = require("../Controllers/User");
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ storage: multer.memoryStorage() });
 
 router.post(
     "/register",
