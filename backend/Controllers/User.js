@@ -1,5 +1,6 @@
 const User = require("../Models/User");
 const bcrypt = require("bcrypt");
+const uploadToS3 = require("../db/Aws-s3");
 
 const Register = async(req, res) => {
     try {
@@ -25,7 +26,7 @@ const Register = async(req, res) => {
 
     }
 
-}
+};
 
 
 const Login = async(req, res) => {
@@ -57,8 +58,65 @@ const Login = async(req, res) => {
 };
 
 
+const forgetpassword = async(req, res) => {
+    try {
+        const { email, newpassword, confirmpassword } = req.body;
+
+        if (!email) {
+            res.status(400).json({ message: "Please enter email" });
+
+        }
+        if (newpassword !== confirmpassword) {
+            res.status(400).json({ message: "Passwords do not match" });
+
+        }
+
+        const userdata = await User.findOne({ email: email });
+        if (!userdata) {
+            res.status(404).json({ message: "User not found" });
+
+        }
+        const saltrounds = 10;
+        const hashpassword = bcrypt.hashSync(newpassword, saltrounds);
+        await User.update({ email, password: hashpassword });
+
+        res.status(200).json({ message: "Password updated" });
 
 
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+
+    }
+};
+
+const updateprofile = async(req, res) => {
+    try {
+        // const { email, name, age, gender, height, weight } = req.body;
+        // console.log(req.body);
+        const profilePicture = req.file;
+        console.log(profilePicture, "12344");
+
+        // if (!email) {
+        //     return res.status(400).json({ message: "Email is required" });
+        // }
+
+        let imageUrl = null;
+        if (profilePicture) {
+            imageUrl = await uploadToS3(profilePicture);
+            console.log(imageUrl, "123");
+        }
+        const email = "kaustubh@gmail.com";
+        const updatedUser = await User.findOneAndUpdate({ email }, { profilePicture: imageUrl }, { new: true });
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.json({ message: "Profile updated successfully", user: updatedUser });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 
 
 
@@ -68,5 +126,8 @@ const Login = async(req, res) => {
 
 module.exports = {
     Register,
-    Login
+    Login,
+    forgetpassword,
+    updateprofile,
+
 };
