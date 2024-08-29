@@ -92,9 +92,8 @@ const forgetpassword = async(req, res) => {
 const updateprofile = async(req, res) => {
     try {
         const { email, name, age, gender, height, weight } = req.body;
-        console.log(req.body);
+
         const profilePicture = req.file;
-        console.log(profilePicture, "12344");
 
         if (!email) {
             return res.status(400).json({ message: "Email is required" });
@@ -105,7 +104,7 @@ const updateprofile = async(req, res) => {
             imageUrl = await uploadToS3(profilePicture);
 
         }
-        const updatedUser = await User.findOneAndUpdate({ email }, { profilePicture: imageUrl }, { new: true });
+        const updatedUser = await User.findOneAndUpdate({ email }, { profilePicture: imageUrl, name, age, gender, height, weight }, { new: true });
 
         if (!updatedUser) {
             return res.status(404).json({ message: "User not found" });
@@ -118,7 +117,32 @@ const updateprofile = async(req, res) => {
 };
 
 
+const deleteprofile = async(req, res) => {
+    try {
+        const { email } = req.body;
 
+        if (!email) {
+            res.status(400).json({ message: "Please provide email id" });
+        }
+        const userdata = await User.findOneAndDelete({ email: email });
+        res.status(200).json({ message: "User Deleted Succesful" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+
+    }
+};
+
+const getallusers = async(req, res) => {
+    try {
+
+        const alluserData = await User.find();
+        res.json({ message: "All users fetched successfully", users: alluserData });
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+
+    }
+};
 
 
 
@@ -128,5 +152,7 @@ module.exports = {
     Login,
     forgetpassword,
     updateprofile,
+    deleteprofile,
+    getallusers
 
 };

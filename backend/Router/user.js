@@ -21,4 +21,7 @@ router.post(
     User.updateprofile
 );
 
+router.delete("/userdelete", User.deleteprofile);
+router.get("/getallusers", User.getallusers);
+
 module.exports = router;
