@@ -12,6 +12,7 @@ const port = process.env.PORT || 8000;
 
 app.use("/user", require("./Router/user"));
 
+app.use("/goals", require("./Router/goals"));
 app.listen(port, () => {
     console.log(`Listing on port ${port}`);
 });
