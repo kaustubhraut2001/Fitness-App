@@ -84,5 +84,4 @@ module.exports = {
     updategoal,
     deletegoals,
     getgoalbyid
-
 };

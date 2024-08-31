@@ -1,0 +1,71 @@
+1. User APIs
+Create User
+POST /api/users
+Creates a new user in the database.
+Get User by ID
+GET /api/users/:id
+Retrieves user information by user ID.
+Update User
+PUT /api/users/:id
+Updates user details like name, email, password, etc.
+Delete User
+DELETE /api/users/:id
+Deletes a user by ID.
+Login User
+POST /api/users/login
+Authenticates a user using email and password.
+2. Goal APIs
+Create Goal
+POST /api/goals
+Creates a new goal for a user.
+Get Goals by User ID
+GET /api/goals/user/:userId
+Retrieves all goals for a specific user.
+Update Goal
+PUT /api/goals/:id
+Updates a specific goal by ID.
+Delete Goal
+DELETE /api/goals/:id
+Deletes a specific goal by ID.
+Get Goal by ID
+GET /api/goals/:id
+Retrieves a specific goal by ID.
+3. Workout APIs
+Create Workout
+POST /api/workouts
+Creates a new workout entry for a user.
+Get Workouts by User ID
+GET /api/workouts/user/:userId
+Retrieves all workout entries for a specific user.
+Update Workout
+PUT /api/workouts/:id
+Updates a specific workout entry by ID.
+Delete Workout
+DELETE /api/workouts/:id
+Deletes a specific workout entry by ID.
+Get Workout by ID
+GET /api/workouts/:id
+Retrieves a specific workout entry by ID.
+4. Notification APIs
+Create Notification
+POST /api/notifications
+Creates a new notification for a user.
+Get Notifications by User ID
+GET /api/notifications/user/:userId
+Retrieves all notifications for a specific user.
+Update Notification
+PUT /api/notifications/:id
+Updates a specific notification by ID.
+Delete Notification
+DELETE /api/notifications/:id
+Deletes a specific notification by ID.
+Get Notification by ID
+GET /api/notifications/:id
+Retrieves a specific notification by ID.
+5. General APIs
+Get All Goals, Workouts, or Notifications (Optional)
+GET /api/goals
+GET /api/workouts
+GET /api/notifications
+Retrieves all records in the respective collections, with filtering and pagination options.
+These APIs cover the CRUD operations for the User, Goal, Workout, and Notification schemas, allowing for full interaction with your app's core data.
